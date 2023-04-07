@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+       body {
+        background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEisqw1T8y7PYYGISMHTrYg2cqLhdl0ofEr3hVjb3CZMMm03DUoFUNknXnFl3YEI8CVgWvEamLx95dXH-juYpWFw8NUc71BYsp1MnXBz5sNt54GvhPZ4u1cR3gbEuvyFI0MQrtU1RKouSGPD43HQXRIxUEDezmWWpqLlAREpw-zykMM1Al7O8Cw6-Bu_/w640-h360/Blue%20And%20Navy%20Modern%20Digital%20Marketing%20Conference%20Zoom%20Virtual%20Background%20(1).jpg');
+        background-size: cover;
+        background-position: right top;
+      }
+      .search-box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100px;
+      }
+      
+      .search-box form {
+        display: flex;
+        align-items: center;
+        width: 20%;
+      }
+      
+      .search-box input[type="text"] {
+        border-radius: 25px;
+        padding: 10px;
+        border: none;
+        outline: none;
+        font-size: 16px;
+        width: 100%;
+        text-align: center; /* tambahkan kode ini */
+        margin: auto; /* tambahkan kode ini */
+      }
+      .search-box input[type="button"] {
+        border-radius: 25px;
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        outline: none;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .search-box input[type="button"]:hover {
+        background-color: #3e8e41;
+      }
+
+      .search-box input[type="button"]:focus {
+        outline: none;
+      }
+
+      .search-box #searchBtn {
+        margin-left: 10px;
+        margin-right: 0;
+      }
+
+      table {
+        border-collapse: inherit;
+        margin: auto;
+      }
+
+      th, td {
+        border: 1px solid black;
+        padding: 20px;
+        text-align: center;
+      }
+
+      th {
+        background-color: #ccc;
+      }
+
+      .error {
+        color: red;
+        text-align: center;
+        margin-top: 50px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="search-box">
+      <form>
+     <label class="sr-only"> </label>
+    <input type="text" id="npsn" name="npsn" placeholder="Masukkan NPSN sekolah">
+    <input type="button" value="Search" onclick="search()" id="searchBtn">
+      </form>
+    </div>
+    <div id="result"></div>
+    <script>
+      function search() {
+        var npsn = document.getElementById("npsn").value;
+        google.script.run.withSuccessHandler(displayResult).searchNPSN(npsn);
+      }
+
+      function displayResult(result) {
+        var resultDiv = document.getElementById("result");
+        if (result == "Data Tidak Ditemukan") {
+          resultDiv.innerHTML = "<div class='error'>Data Tidak Ditemukan</div>";
+        } else {
+          var table = "<table>";
+          table += "<tr><th>NO</th><th>NPSN</th><th>NAMA SEKOLAH/CLC</th><th>JENJANG</th><th>TAHUN</th><th>SKL</th></tr>";
+          for (var i = 0; i < result.length; i++) {
+            table += "<tr><td>" + (i + 1) + "</td><td>" + result[i][1] + "</td><td>" + result[i][2] + "</td><td>" + result[i][3] + "</td><td>" + result[i][4] +"</td><td><a href='" + result[i][5] + "' target='_blank'>Download</a></td></tr>";
+          }
+          table += "</table>";
+          resultDiv.innerHTML = table;
+        }
+      }
+
+      document.getElementById("npsn").addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          document.getElementById("searchBtn").click();
+        }
+      });
+    </script>
+  </body>
+</html>
